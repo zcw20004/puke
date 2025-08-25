@@ -1,0 +1,24 @@
+# Node modules
+/node_modules
+../代码对比分析.md
+../快速开始指南.md
+../项目实现计划.md
+../炸金花智能合约练手项目.md
+../炸金花智能合约游戏设计文档.md
+# Compilation output
+/dist
+
+# pnpm deploy output
+/bundle
+
+# Hardhat Build Artifacts
+/artifacts
+
+# Hardhat compilation (v2) support directory
+/cache
+
+# Typechain output
+/types
+
+# Hardhat coverage reports
+/coverage
