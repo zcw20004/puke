@@ -15,7 +15,21 @@
 ```
 puke-poker/
 ├── contracts/
-│   └── PokerGame.sol          # 炸金花游戏主合约
+│   ├── access/           # 访问控制
+│   │   ├── Ownable.sol
+│   │   └── Pausable.sol
+│   ├── token/            # 代币相关
+│   │   ├── PokerToken.sol
+│   │   └── TokenFaucet.sol
+│   ├── utils/            # 工具库
+│   │   ├── CardUtils.sol
+│   │   ├── RandomGenerator.sol
+│   │   └── SafeMath.sol
+│   ├── game/             # 游戏逻辑
+│   │   ├── GameLogic.sol
+│   │   ├── GameRoom.sol
+│   │   └── PokerGame.sol
+│   └── PokerGame.sol     # 主合约（继承模块化合约）
 ├── test/
 │   ├── PokerGame.ts           # PokerGame 合约测试文件
 │   └── Counter.ts             # 示例测试文件

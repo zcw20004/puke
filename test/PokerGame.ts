@@ -13,8 +13,8 @@ describe("PokerGame合约测试", async function () {
     // 获取测试账户
     accounts = await viem.getWalletClients();
     
-    // 部署合约
-    pokerGame = await viem.deployContract("PokerGame");
+    // 部署合约 - 指定完整路径以避免歧义
+    pokerGame = await viem.deployContract("contracts/PokerGame.sol:PokerGame");
   });
 
   describe("基本游戏功能测试", function () {
