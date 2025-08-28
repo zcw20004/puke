@@ -24,7 +24,7 @@ contract GameLogic {
     struct Player {
         address addr;
         uint256 chips;
-        uint8[3] cards;
+        CardUtils.Card[3] cards;
         uint256 currentBet;
         bool isActive;
         bool hasCards;
@@ -93,16 +93,30 @@ contract GameLogic {
         address winner = address(0);
         CardUtils.HandType bestType = CardUtils.HandType.HIGH_CARD;
         uint8 bestValue = 0;
+        CardUtils.Card[3] memory bestCards;
         
         for (uint i = 0; i < game.players.length; i++) {
             if (!game.players[i].isActive) continue;
             
             (CardUtils.HandType handType, uint8 handValue) = CardUtils.evaluateHand(game.players[i].cards);
             
-            if (handType > bestType || (handType == bestType && handValue > bestValue)) {
+            // 如果是第一个玩家或者当前牌更大
+            if (winner == address(0)) {
                 winner = game.players[i].addr;
                 bestType = handType;
                 bestValue = handValue;
+                bestCards = game.players[i].cards;
+            } else {
+                bool isBetter = CardUtils.compareHands(
+                    handType, handValue, bestType, bestValue,
+                    game.players[i].cards, bestCards
+                );
+                if (isBetter) {
+                    winner = game.players[i].addr;
+                    bestType = handType;
+                    bestValue = handValue;
+                    bestCards = game.players[i].cards;
+                }
             }
         }
         
@@ -174,10 +188,16 @@ contract GameLogic {
      * @param chips 筹码数量
      */
     function _addPlayer(uint256 gameId, address playerAddr, uint256 chips) internal {
+        // 创建空卡牌数组
+        CardUtils.Card[3] memory emptyCards;
+        for (uint i = 0; i < 3; i++) {
+            emptyCards[i] = CardUtils.Card(CardUtils.Suit.DIAMONDS, 1);
+        }
+        
         games[gameId].players.push(Player({
             addr: playerAddr,
             chips: chips,
-            cards: [0, 0, 0],
+            cards: emptyCards,
             currentBet: 0,
             isActive: true,
             hasCards: false

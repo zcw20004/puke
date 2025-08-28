@@ -153,9 +153,15 @@ describe("PokerGame合约测试", async function () {
       
       // 验证返回3张牌
       assert.equal(cards.length, 3);
-      // 验证牌值在1-13范围内
-      for (const card of cards) {
-        assert(card >= 1 && card <= 13);
+      // 验证牌值和花色有效
+      for (let i = 0; i < cards.length; i++) {
+        const card = cards[i];
+        // card现在是一个结构体，根据ABI编码可能是 {suit, rank} 或 [suit, rank]
+        const suit = card.suit !== undefined ? card.suit : card[0];
+        const rank = card.rank !== undefined ? card.rank : card[1];
+        
+        assert(suit >= 0 && suit <= 3, `Invalid suit: ${suit}`); // 花色 0-3  
+        assert(rank >= 1 && rank <= 13, `Invalid rank: ${rank}`); // 点数 1-13
       }
     });
 

@@ -98,7 +98,7 @@ contract GameRoom is GameLogic {
      * @param playerAddr 玩家地址
      * @return 玩家的三张手牌
      */
-    function getPlayerCards(uint256 gameId, address playerAddr) external view returns (uint8[3] memory) {
+    function getPlayerCards(uint256 gameId, address playerAddr) external view returns (CardUtils.Card[3] memory) {
         require(msg.sender == playerAddr, "Can only view own cards");
         Player storage player = _getPlayer(gameId, playerAddr);
         return player.cards;

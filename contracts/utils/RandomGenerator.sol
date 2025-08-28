@@ -1,19 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
+import "./CardUtils.sol";
+
 /**
  * @title RandomGenerator
  * @dev 随机数生成工具库
  */
 library RandomGenerator {
     /**
-     * @dev 生成随机牌值
+     * @dev 生成随机卡牌
      * @param gameId 游戏ID
      * @param nonce 随机数种子
      * @param sender 调用者地址
-     * @return 1-13之间的随机数
+     * @return 随机卡牌
      */
-    function drawCard(uint256 gameId, uint256 nonce, address sender) internal view returns (uint8) {
+    function drawCard(uint256 gameId, uint256 nonce, address sender) internal view returns (CardUtils.Card memory) {
         uint256 randomNum = uint256(keccak256(abi.encodePacked(
             block.timestamp,
             block.prevrandao,
@@ -21,7 +23,14 @@ library RandomGenerator {
             gameId,
             nonce
         )));
-        return uint8((randomNum % 13) + 1); // 1-13
+        
+        // 生成花色 (0-3)
+        CardUtils.Suit suit = CardUtils.Suit(randomNum % 4);
+        
+        // 生成点数 (1-13)
+        uint8 rank = uint8((randomNum / 4) % 13) + 1;
+        
+        return CardUtils.Card(suit, rank);
     }
 
     /**
