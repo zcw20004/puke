@@ -102,7 +102,7 @@ enum GameState { WAITING, DEALING, BETTING, REVEALING, FINISHED }
 - `FINISHED` - 游戏结束
 
 ## 手牌类型
-
+1. **手牌类型枚举**:
 ```solidity
 enum HandType { HIGH_CARD, PAIR, STRAIGHT, THREE_KIND }
 ```
@@ -111,6 +111,15 @@ enum HandType { HIGH_CARD, PAIR, STRAIGHT, THREE_KIND }
 - `PAIR` - 对子
 - `STRAIGHT` - 顺子
 - `THREE_KIND` - 豹子（三条）
+
+2. **牌型大小**:
+   - 豹子（三张相同）> 同花顺 > 同花 > 顺子 > 对子 > 单张
+   - 特殊：235、123（最小顺子）可以击败豹子
+3. **比牌规则**: 点数大小 A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4 > 3 > 2
+4. **牌型比较**: 优先比较牌型，再比较点数大小
+5. **牌型相同**: 比较点数大小，点数大的获胜
+6. **牌型不同**: 牌型大的获胜
+7. **平局**: 重新洗牌，重新比牌
 
 ## 运行测试的步骤
 
